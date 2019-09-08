@@ -1,0 +1,75 @@
+vim: syntax=HTML
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Circle Orbit</title>
+  <style>
+	#fasti, #calendar{
+		font-family: Arial; font-size: 18pt;
+	}
+	#orbit{
+		width: 600px; height: 600px;
+		position: absolute;
+		left: 600px; top: 360px;
+		z-index: 0;
+	}
+	#sun{
+		width: 150px; height: 150px;
+		position: absolute;
+		left: 600px; top: 360px;
+		z-index: 1;
+	}
+	#earth{
+		width: 80px; height: 80px;
+		position: absolute;
+		left: 900px; top: 360px;
+		z-index: 2;
+	}
+	#moon{
+		width: 30px; height: 30px;
+		position: absolute;
+		left: 980px; top: 360px;
+		z-index: 2;
+	}
+  </style>
+  <script>
+	r = Math.PI/2;
+	th = Math.PI/2;
+	timer = 0;
+	month = 0;
+	function orbit(){
+		if (timer%8 == 0){
+			if (r <= 0) r = 2*Math.PI;
+			r = r - Math.PI/18;
+			var terra = document.getElementById("earth");
+			var earth_x = 600 + 300*Math.sin(r);
+			var earth_y = 360 + 300*Math.cos(r);
+			earth.style.left = earth_x + "px";
+			earth.style.top = earth_y + "px";
+		}
+
+		if (th <= 0) th = 2*Math.PI;
+		th = th - Math.PI/12;
+		var luna = document.getElementById("moon");
+		luna.style.left = (earth_x + 80*Math.sin(th)) + "px";
+		luna.style.top = (earth_y + 80*Math.cos(th) ) + "px";
+
+		timer++ < 287 ? setTimeout("orbit()", 12) : timer = 0;
+		if (month == 12) month = 0;
+		if (timer%24 == 0) document.getElementById("calendar").value = ++month;
+		//While Earth orbits sun once, Moon orbits Earth 12x since every 30 days vs. ~360 days
+	}
+  </script>
+ </head>
+ <body>
+  <div id="orbit"> <img src="orbit.png" width=600px height=600px style="position: relative; left: -300px; top: -300px"> </div>
+  <div id="sun"> <img src="sun.png" width=150px height=150px style="position: relative; left: -75px; top: -75px" onclick="orbit()"> </div>
+  <div id="earth"> <img src="earth.png" width=80px height=80px style="position: relative; left: -40px; top: -40px"> </div>
+  <div id="moon"> <img src="moon.png" width=30px height=30px style="position: relative; left: -15px; top: -15px"> </div>
+  <h2> Earth and Moon's Orbit </h2>
+  <form id="fasti">
+		Month: <input type="text" id="calendar" value="Hello" style="border: none" readonly>
+  </form>
+ </body>
+</html>
